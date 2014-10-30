@@ -11,12 +11,12 @@ def minus(list1, list2):
 def isClassOfBlockExists(class_list, classNameInBlock_list):
     print()
 
-#vérifir
+#vérifier
 # si toutes les states sont déclarée
 # si toutes les states sont util (déclaré, mais pas apparaitre dans transition)
 def verifyStateOfClass():
     print()
-
+    
 def verifyClass():
     verifyStateOfClass()
 
