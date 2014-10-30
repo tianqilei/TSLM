@@ -1,0 +1,8 @@
+block C
+Door A, B
+event closing, aopen, bopen
+synchronization
+  aopen : A.opening
+  bopen : B.opening
+  closing1 : A.closing & B.closing
+end

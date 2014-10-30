@@ -1,0 +1,933 @@
+Created by PLY version 3.4 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> Model
+Rule 1     empty -> <empty>
+Rule 2     Identifier -> IDENTIFIER
+Rule 3     ClassIdentifier -> IDENTIFIER
+Rule 4     BlockIdentifier -> IDENTIFIER
+Rule 5     EventPath -> IDENTIFIER POINT IDENTIFIER
+Rule 6     AndCommercialEvenPathStar -> empty
+Rule 7     AndCommercialEvenPathStar -> ANDCOMMERCIAL EventPath AndCommercialEvenPathStar
+Rule 8     MacroEventDefinition -> EventIdentifierInSynchronization DEUXPOINTS EventPath AndCommercialEvenPathStar
+Rule 9     EventIdentifierInSynchronization -> IDENTIFIER
+Rule 10    Synchronization -> MacroEventDefinition
+Rule 11    SynchronizationStar -> empty
+Rule 12    SynchronizationStar -> Synchronization SynchronizationStar
+Rule 13    SynchronizationClause -> SYNCHRONIZATION SynchronizationStar
+Rule 14    ClassNameIdentifier -> IDENTIFIER
+Rule 15    ClassInstanceIdentifier -> IDENTIFIER
+Rule 16    ClassInstanceVirguleIdentifierStar -> empty
+Rule 17    ClassInstanceVirguleIdentifierStar -> VIRGULE ClassInstanceIdentifier ClassInstanceVirguleIdentifierStar
+Rule 18    ClassInstance -> ClassNameIdentifier ClassInstanceIdentifier ClassInstanceVirguleIdentifierStar
+Rule 19    ComposedBlockClause -> Block
+Rule 20    ComposedBlockClause -> ClassInstance
+Rule 21    ComposedBlockClause -> Block ComposedBlockClause
+Rule 22    ComposedBlockClause -> ClassInstance ComposedBlockClause
+Rule 23    StateIdentifier -> IDENTIFIER
+Rule 24    EventIdentifier -> IDENTIFIER
+Rule 25    Transition -> EventIdentifierInTransition DEUXPOINTS OriginalStateIdentifierInTransition FLECHE DestStateIdentifierInTransition
+Rule 26    OriginalStateIdentifierInTransition -> IDENTIFIER
+Rule 27    DestStateIdentifierInTransition -> IDENTIFIER
+Rule 28    EventIdentifierInTransition -> IDENTIFIER
+Rule 29    TransitionStar -> empty
+Rule 30    TransitionStar -> Transition TransitionStar
+Rule 31    TransitionClause -> TRANSITION TransitionStar
+Rule 32    EventClause -> EVENT EventIdentifier EventVirguleIdentifierStar
+Rule 33    StateClause -> STATE StateIdentifier StateVirguleIdentifierStar
+Rule 34    EventVirguleIdentifierStar -> empty
+Rule 35    EventVirguleIdentifierStar -> VIRGULE EventIdentifier EventVirguleIdentifierStar
+Rule 36    StateVirguleIdentifierStar -> empty
+Rule 37    StateVirguleIdentifierStar -> VIRGULE StateIdentifier StateVirguleIdentifierStar
+Rule 38    InternalBlockBody -> ComposedBlockClause EventClause SynchronizationClause
+Rule 39    BasicBlockBody -> StateClause EventClause TransitionClause
+Rule 40    BlockBody -> BasicBlockBody
+Rule 41    BlockBody -> InternalBlockBody
+Rule 42    Class -> CLASS ClassIdentifier BlockBody END
+Rule 43    Block -> BLOCK BlockIdentifier BlockBody END
+Rule 44    Model -> Block
+Rule 45    Model -> Class
+Rule 46    Model -> empty
+
+Terminals, with rules where they appear
+
+ANDCOMMERCIAL        : 7
+BLOCK                : 43
+CLASS                : 42
+DEUXPOINTS           : 8 25
+END                  : 42 43
+EVENT                : 32
+FLECHE               : 25
+IDENTIFIER           : 2 3 4 5 5 9 14 15 23 24 26 27 28
+POINT                : 5
+STATE                : 33
+SYNCHRONIZATION      : 13
+TRANSITION           : 31
+VIRGULE              : 17 35 37
+error                : 
+
+Nonterminals, with rules where they appear
+
+AndCommercialEvenPathStar : 7 8
+BasicBlockBody       : 40
+Block                : 19 21 44
+BlockBody            : 42 43
+BlockIdentifier      : 43
+Class                : 45
+ClassIdentifier      : 42
+ClassInstance        : 20 22
+ClassInstanceIdentifier : 17 18
+ClassInstanceVirguleIdentifierStar : 17 18
+ClassNameIdentifier  : 18
+ComposedBlockClause  : 21 22 38
+DestStateIdentifierInTransition : 25
+EventClause          : 38 39
+EventIdentifier      : 32 35
+EventIdentifierInSynchronization : 8
+EventIdentifierInTransition : 25
+EventPath            : 7 8
+EventVirguleIdentifierStar : 32 35
+Identifier           : 
+InternalBlockBody    : 41
+MacroEventDefinition : 10
+Model                : 0
+OriginalStateIdentifierInTransition : 25
+StateClause          : 39
+StateIdentifier      : 33 37
+StateVirguleIdentifierStar : 33 37
+Synchronization      : 12
+SynchronizationClause : 38
+SynchronizationStar  : 12 13
+Transition           : 30
+TransitionClause     : 39
+TransitionStar       : 30 31
+empty                : 6 11 16 29 34 36 46
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . Model
+    (44) Model -> . Block
+    (45) Model -> . Class
+    (46) Model -> . empty
+    (43) Block -> . BLOCK BlockIdentifier BlockBody END
+    (42) Class -> . CLASS ClassIdentifier BlockBody END
+    (1) empty -> .
+
+    BLOCK           shift and go to state 2
+    CLASS           shift and go to state 1
+    $end            reduce using rule 1 (empty -> .)
+
+    Model                          shift and go to state 4
+    Class                          shift and go to state 3
+    empty                          shift and go to state 5
+    Block                          shift and go to state 6
+
+state 1
+
+    (42) Class -> CLASS . ClassIdentifier BlockBody END
+    (3) ClassIdentifier -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 7
+
+    ClassIdentifier                shift and go to state 8
+
+state 2
+
+    (43) Block -> BLOCK . BlockIdentifier BlockBody END
+    (4) BlockIdentifier -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 10
+
+    BlockIdentifier                shift and go to state 9
+
+state 3
+
+    (45) Model -> Class .
+
+    $end            reduce using rule 45 (Model -> Class .)
+
+
+state 4
+
+    (0) S' -> Model .
+
+
+
+state 5
+
+    (46) Model -> empty .
+
+    $end            reduce using rule 46 (Model -> empty .)
+
+
+state 6
+
+    (44) Model -> Block .
+
+    $end            reduce using rule 44 (Model -> Block .)
+
+
+state 7
+
+    (3) ClassIdentifier -> IDENTIFIER .
+
+    STATE           reduce using rule 3 (ClassIdentifier -> IDENTIFIER .)
+    BLOCK           reduce using rule 3 (ClassIdentifier -> IDENTIFIER .)
+    IDENTIFIER      reduce using rule 3 (ClassIdentifier -> IDENTIFIER .)
+
+
+state 8
+
+    (42) Class -> CLASS ClassIdentifier . BlockBody END
+    (40) BlockBody -> . BasicBlockBody
+    (41) BlockBody -> . InternalBlockBody
+    (39) BasicBlockBody -> . StateClause EventClause TransitionClause
+    (38) InternalBlockBody -> . ComposedBlockClause EventClause SynchronizationClause
+    (33) StateClause -> . STATE StateIdentifier StateVirguleIdentifierStar
+    (19) ComposedBlockClause -> . Block
+    (20) ComposedBlockClause -> . ClassInstance
+    (21) ComposedBlockClause -> . Block ComposedBlockClause
+    (22) ComposedBlockClause -> . ClassInstance ComposedBlockClause
+    (43) Block -> . BLOCK BlockIdentifier BlockBody END
+    (18) ClassInstance -> . ClassNameIdentifier ClassInstanceIdentifier ClassInstanceVirguleIdentifierStar
+    (14) ClassNameIdentifier -> . IDENTIFIER
+
+    STATE           shift and go to state 20
+    BLOCK           shift and go to state 2
+    IDENTIFIER      shift and go to state 17
+
+    ClassNameIdentifier            shift and go to state 11
+    BasicBlockBody                 shift and go to state 19
+    Block                          shift and go to state 14
+    InternalBlockBody              shift and go to state 13
+    BlockBody                      shift and go to state 12
+    ComposedBlockClause            shift and go to state 15
+    StateClause                    shift and go to state 16
+    ClassInstance                  shift and go to state 18
+
+state 9
+
+    (43) Block -> BLOCK BlockIdentifier . BlockBody END
+    (40) BlockBody -> . BasicBlockBody
+    (41) BlockBody -> . InternalBlockBody
+    (39) BasicBlockBody -> . StateClause EventClause TransitionClause
+    (38) InternalBlockBody -> . ComposedBlockClause EventClause SynchronizationClause
+    (33) StateClause -> . STATE StateIdentifier StateVirguleIdentifierStar
+    (19) ComposedBlockClause -> . Block
+    (20) ComposedBlockClause -> . ClassInstance
+    (21) ComposedBlockClause -> . Block ComposedBlockClause
+    (22) ComposedBlockClause -> . ClassInstance ComposedBlockClause
+    (43) Block -> . BLOCK BlockIdentifier BlockBody END
+    (18) ClassInstance -> . ClassNameIdentifier ClassInstanceIdentifier ClassInstanceVirguleIdentifierStar
+    (14) ClassNameIdentifier -> . IDENTIFIER
+
+    STATE           shift and go to state 20
+    BLOCK           shift and go to state 2
+    IDENTIFIER      shift and go to state 17
+
+    ClassNameIdentifier            shift and go to state 11
+    BlockBody                      shift and go to state 21
+    Block                          shift and go to state 14
+    InternalBlockBody              shift and go to state 13
+    BasicBlockBody                 shift and go to state 19
+    ComposedBlockClause            shift and go to state 15
+    StateClause                    shift and go to state 16
+    ClassInstance                  shift and go to state 18
+
+state 10
+
+    (4) BlockIdentifier -> IDENTIFIER .
+
+    STATE           reduce using rule 4 (BlockIdentifier -> IDENTIFIER .)
+    BLOCK           reduce using rule 4 (BlockIdentifier -> IDENTIFIER .)
+    IDENTIFIER      reduce using rule 4 (BlockIdentifier -> IDENTIFIER .)
+
+
+state 11
+
+    (18) ClassInstance -> ClassNameIdentifier . ClassInstanceIdentifier ClassInstanceVirguleIdentifierStar
+    (15) ClassInstanceIdentifier -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 23
+
+    ClassInstanceIdentifier        shift and go to state 22
+
+state 12
+
+    (42) Class -> CLASS ClassIdentifier BlockBody . END
+
+    END             shift and go to state 24
+
+
+state 13
+
+    (41) BlockBody -> InternalBlockBody .
+
+    END             reduce using rule 41 (BlockBody -> InternalBlockBody .)
+
+
+state 14
+
+    (19) ComposedBlockClause -> Block .
+    (21) ComposedBlockClause -> Block . ComposedBlockClause
+    (19) ComposedBlockClause -> . Block
+    (20) ComposedBlockClause -> . ClassInstance
+    (21) ComposedBlockClause -> . Block ComposedBlockClause
+    (22) ComposedBlockClause -> . ClassInstance ComposedBlockClause
+    (43) Block -> . BLOCK BlockIdentifier BlockBody END
+    (18) ClassInstance -> . ClassNameIdentifier ClassInstanceIdentifier ClassInstanceVirguleIdentifierStar
+    (14) ClassNameIdentifier -> . IDENTIFIER
+
+    EVENT           reduce using rule 19 (ComposedBlockClause -> Block .)
+    BLOCK           shift and go to state 2
+    IDENTIFIER      shift and go to state 17
+
+    ClassNameIdentifier            shift and go to state 11
+    ClassInstance                  shift and go to state 18
+    Block                          shift and go to state 14
+    ComposedBlockClause            shift and go to state 25
+
+state 15
+
+    (38) InternalBlockBody -> ComposedBlockClause . EventClause SynchronizationClause
+    (32) EventClause -> . EVENT EventIdentifier EventVirguleIdentifierStar
+
+    EVENT           shift and go to state 26
+
+    EventClause                    shift and go to state 27
+
+state 16
+
+    (39) BasicBlockBody -> StateClause . EventClause TransitionClause
+    (32) EventClause -> . EVENT EventIdentifier EventVirguleIdentifierStar
+
+    EVENT           shift and go to state 26
+
+    EventClause                    shift and go to state 28
+
+state 17
+
+    (14) ClassNameIdentifier -> IDENTIFIER .
+
+    IDENTIFIER      reduce using rule 14 (ClassNameIdentifier -> IDENTIFIER .)
+
+
+state 18
+
+    (20) ComposedBlockClause -> ClassInstance .
+    (22) ComposedBlockClause -> ClassInstance . ComposedBlockClause
+    (19) ComposedBlockClause -> . Block
+    (20) ComposedBlockClause -> . ClassInstance
+    (21) ComposedBlockClause -> . Block ComposedBlockClause
+    (22) ComposedBlockClause -> . ClassInstance ComposedBlockClause
+    (43) Block -> . BLOCK BlockIdentifier BlockBody END
+    (18) ClassInstance -> . ClassNameIdentifier ClassInstanceIdentifier ClassInstanceVirguleIdentifierStar
+    (14) ClassNameIdentifier -> . IDENTIFIER
+
+    EVENT           reduce using rule 20 (ComposedBlockClause -> ClassInstance .)
+    BLOCK           shift and go to state 2
+    IDENTIFIER      shift and go to state 17
+
+    ClassNameIdentifier            shift and go to state 11
+    ClassInstance                  shift and go to state 18
+    Block                          shift and go to state 14
+    ComposedBlockClause            shift and go to state 29
+
+state 19
+
+    (40) BlockBody -> BasicBlockBody .
+
+    END             reduce using rule 40 (BlockBody -> BasicBlockBody .)
+
+
+state 20
+
+    (33) StateClause -> STATE . StateIdentifier StateVirguleIdentifierStar
+    (23) StateIdentifier -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 30
+
+    StateIdentifier                shift and go to state 31
+
+state 21
+
+    (43) Block -> BLOCK BlockIdentifier BlockBody . END
+
+    END             shift and go to state 32
+
+
+state 22
+
+    (18) ClassInstance -> ClassNameIdentifier ClassInstanceIdentifier . ClassInstanceVirguleIdentifierStar
+    (16) ClassInstanceVirguleIdentifierStar -> . empty
+    (17) ClassInstanceVirguleIdentifierStar -> . VIRGULE ClassInstanceIdentifier ClassInstanceVirguleIdentifierStar
+    (1) empty -> .
+
+    VIRGULE         shift and go to state 35
+    BLOCK           reduce using rule 1 (empty -> .)
+    IDENTIFIER      reduce using rule 1 (empty -> .)
+    EVENT           reduce using rule 1 (empty -> .)
+
+    ClassInstanceVirguleIdentifierStar shift and go to state 33
+    empty                          shift and go to state 34
+
+state 23
+
+    (15) ClassInstanceIdentifier -> IDENTIFIER .
+
+    VIRGULE         reduce using rule 15 (ClassInstanceIdentifier -> IDENTIFIER .)
+    BLOCK           reduce using rule 15 (ClassInstanceIdentifier -> IDENTIFIER .)
+    IDENTIFIER      reduce using rule 15 (ClassInstanceIdentifier -> IDENTIFIER .)
+    EVENT           reduce using rule 15 (ClassInstanceIdentifier -> IDENTIFIER .)
+
+
+state 24
+
+    (42) Class -> CLASS ClassIdentifier BlockBody END .
+
+    $end            reduce using rule 42 (Class -> CLASS ClassIdentifier BlockBody END .)
+
+
+state 25
+
+    (21) ComposedBlockClause -> Block ComposedBlockClause .
+
+    EVENT           reduce using rule 21 (ComposedBlockClause -> Block ComposedBlockClause .)
+
+
+state 26
+
+    (32) EventClause -> EVENT . EventIdentifier EventVirguleIdentifierStar
+    (24) EventIdentifier -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 37
+
+    EventIdentifier                shift and go to state 36
+
+state 27
+
+    (38) InternalBlockBody -> ComposedBlockClause EventClause . SynchronizationClause
+    (13) SynchronizationClause -> . SYNCHRONIZATION SynchronizationStar
+
+    SYNCHRONIZATION shift and go to state 38
+
+    SynchronizationClause          shift and go to state 39
+
+state 28
+
+    (39) BasicBlockBody -> StateClause EventClause . TransitionClause
+    (31) TransitionClause -> . TRANSITION TransitionStar
+
+    TRANSITION      shift and go to state 41
+
+    TransitionClause               shift and go to state 40
+
+state 29
+
+    (22) ComposedBlockClause -> ClassInstance ComposedBlockClause .
+
+    EVENT           reduce using rule 22 (ComposedBlockClause -> ClassInstance ComposedBlockClause .)
+
+
+state 30
+
+    (23) StateIdentifier -> IDENTIFIER .
+
+    VIRGULE         reduce using rule 23 (StateIdentifier -> IDENTIFIER .)
+    EVENT           reduce using rule 23 (StateIdentifier -> IDENTIFIER .)
+
+
+state 31
+
+    (33) StateClause -> STATE StateIdentifier . StateVirguleIdentifierStar
+    (36) StateVirguleIdentifierStar -> . empty
+    (37) StateVirguleIdentifierStar -> . VIRGULE StateIdentifier StateVirguleIdentifierStar
+    (1) empty -> .
+
+    VIRGULE         shift and go to state 42
+    EVENT           reduce using rule 1 (empty -> .)
+
+    StateVirguleIdentifierStar     shift and go to state 43
+    empty                          shift and go to state 44
+
+state 32
+
+    (43) Block -> BLOCK BlockIdentifier BlockBody END .
+
+    BLOCK           reduce using rule 43 (Block -> BLOCK BlockIdentifier BlockBody END .)
+    IDENTIFIER      reduce using rule 43 (Block -> BLOCK BlockIdentifier BlockBody END .)
+    EVENT           reduce using rule 43 (Block -> BLOCK BlockIdentifier BlockBody END .)
+    $end            reduce using rule 43 (Block -> BLOCK BlockIdentifier BlockBody END .)
+
+
+state 33
+
+    (18) ClassInstance -> ClassNameIdentifier ClassInstanceIdentifier ClassInstanceVirguleIdentifierStar .
+
+    BLOCK           reduce using rule 18 (ClassInstance -> ClassNameIdentifier ClassInstanceIdentifier ClassInstanceVirguleIdentifierStar .)
+    IDENTIFIER      reduce using rule 18 (ClassInstance -> ClassNameIdentifier ClassInstanceIdentifier ClassInstanceVirguleIdentifierStar .)
+    EVENT           reduce using rule 18 (ClassInstance -> ClassNameIdentifier ClassInstanceIdentifier ClassInstanceVirguleIdentifierStar .)
+
+
+state 34
+
+    (16) ClassInstanceVirguleIdentifierStar -> empty .
+
+    BLOCK           reduce using rule 16 (ClassInstanceVirguleIdentifierStar -> empty .)
+    IDENTIFIER      reduce using rule 16 (ClassInstanceVirguleIdentifierStar -> empty .)
+    EVENT           reduce using rule 16 (ClassInstanceVirguleIdentifierStar -> empty .)
+
+
+state 35
+
+    (17) ClassInstanceVirguleIdentifierStar -> VIRGULE . ClassInstanceIdentifier ClassInstanceVirguleIdentifierStar
+    (15) ClassInstanceIdentifier -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 23
+
+    ClassInstanceIdentifier        shift and go to state 45
+
+state 36
+
+    (32) EventClause -> EVENT EventIdentifier . EventVirguleIdentifierStar
+    (34) EventVirguleIdentifierStar -> . empty
+    (35) EventVirguleIdentifierStar -> . VIRGULE EventIdentifier EventVirguleIdentifierStar
+    (1) empty -> .
+
+    VIRGULE         shift and go to state 48
+    SYNCHRONIZATION reduce using rule 1 (empty -> .)
+    TRANSITION      reduce using rule 1 (empty -> .)
+
+    EventVirguleIdentifierStar     shift and go to state 47
+    empty                          shift and go to state 46
+
+state 37
+
+    (24) EventIdentifier -> IDENTIFIER .
+
+    VIRGULE         reduce using rule 24 (EventIdentifier -> IDENTIFIER .)
+    SYNCHRONIZATION reduce using rule 24 (EventIdentifier -> IDENTIFIER .)
+    TRANSITION      reduce using rule 24 (EventIdentifier -> IDENTIFIER .)
+
+
+state 38
+
+    (13) SynchronizationClause -> SYNCHRONIZATION . SynchronizationStar
+    (11) SynchronizationStar -> . empty
+    (12) SynchronizationStar -> . Synchronization SynchronizationStar
+    (1) empty -> .
+    (10) Synchronization -> . MacroEventDefinition
+    (8) MacroEventDefinition -> . EventIdentifierInSynchronization DEUXPOINTS EventPath AndCommercialEvenPathStar
+    (9) EventIdentifierInSynchronization -> . IDENTIFIER
+
+    END             reduce using rule 1 (empty -> .)
+    IDENTIFIER      shift and go to state 54
+
+    EventIdentifierInSynchronization shift and go to state 49
+    Synchronization                shift and go to state 50
+    SynchronizationStar            shift and go to state 51
+    MacroEventDefinition           shift and go to state 52
+    empty                          shift and go to state 53
+
+state 39
+
+    (38) InternalBlockBody -> ComposedBlockClause EventClause SynchronizationClause .
+
+    END             reduce using rule 38 (InternalBlockBody -> ComposedBlockClause EventClause SynchronizationClause .)
+
+
+state 40
+
+    (39) BasicBlockBody -> StateClause EventClause TransitionClause .
+
+    END             reduce using rule 39 (BasicBlockBody -> StateClause EventClause TransitionClause .)
+
+
+state 41
+
+    (31) TransitionClause -> TRANSITION . TransitionStar
+    (29) TransitionStar -> . empty
+    (30) TransitionStar -> . Transition TransitionStar
+    (1) empty -> .
+    (25) Transition -> . EventIdentifierInTransition DEUXPOINTS OriginalStateIdentifierInTransition FLECHE DestStateIdentifierInTransition
+    (28) EventIdentifierInTransition -> . IDENTIFIER
+
+    END             reduce using rule 1 (empty -> .)
+    IDENTIFIER      shift and go to state 55
+
+    Transition                     shift and go to state 56
+    EventIdentifierInTransition    shift and go to state 57
+    empty                          shift and go to state 58
+    TransitionStar                 shift and go to state 59
+
+state 42
+
+    (37) StateVirguleIdentifierStar -> VIRGULE . StateIdentifier StateVirguleIdentifierStar
+    (23) StateIdentifier -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 30
+
+    StateIdentifier                shift and go to state 60
+
+state 43
+
+    (33) StateClause -> STATE StateIdentifier StateVirguleIdentifierStar .
+
+    EVENT           reduce using rule 33 (StateClause -> STATE StateIdentifier StateVirguleIdentifierStar .)
+
+
+state 44
+
+    (36) StateVirguleIdentifierStar -> empty .
+
+    EVENT           reduce using rule 36 (StateVirguleIdentifierStar -> empty .)
+
+
+state 45
+
+    (17) ClassInstanceVirguleIdentifierStar -> VIRGULE ClassInstanceIdentifier . ClassInstanceVirguleIdentifierStar
+    (16) ClassInstanceVirguleIdentifierStar -> . empty
+    (17) ClassInstanceVirguleIdentifierStar -> . VIRGULE ClassInstanceIdentifier ClassInstanceVirguleIdentifierStar
+    (1) empty -> .
+
+    VIRGULE         shift and go to state 35
+    BLOCK           reduce using rule 1 (empty -> .)
+    IDENTIFIER      reduce using rule 1 (empty -> .)
+    EVENT           reduce using rule 1 (empty -> .)
+
+    ClassInstanceVirguleIdentifierStar shift and go to state 61
+    empty                          shift and go to state 34
+
+state 46
+
+    (34) EventVirguleIdentifierStar -> empty .
+
+    SYNCHRONIZATION reduce using rule 34 (EventVirguleIdentifierStar -> empty .)
+    TRANSITION      reduce using rule 34 (EventVirguleIdentifierStar -> empty .)
+
+
+state 47
+
+    (32) EventClause -> EVENT EventIdentifier EventVirguleIdentifierStar .
+
+    TRANSITION      reduce using rule 32 (EventClause -> EVENT EventIdentifier EventVirguleIdentifierStar .)
+    SYNCHRONIZATION reduce using rule 32 (EventClause -> EVENT EventIdentifier EventVirguleIdentifierStar .)
+
+
+state 48
+
+    (35) EventVirguleIdentifierStar -> VIRGULE . EventIdentifier EventVirguleIdentifierStar
+    (24) EventIdentifier -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 37
+
+    EventIdentifier                shift and go to state 62
+
+state 49
+
+    (8) MacroEventDefinition -> EventIdentifierInSynchronization . DEUXPOINTS EventPath AndCommercialEvenPathStar
+
+    DEUXPOINTS      shift and go to state 63
+
+
+state 50
+
+    (12) SynchronizationStar -> Synchronization . SynchronizationStar
+    (11) SynchronizationStar -> . empty
+    (12) SynchronizationStar -> . Synchronization SynchronizationStar
+    (1) empty -> .
+    (10) Synchronization -> . MacroEventDefinition
+    (8) MacroEventDefinition -> . EventIdentifierInSynchronization DEUXPOINTS EventPath AndCommercialEvenPathStar
+    (9) EventIdentifierInSynchronization -> . IDENTIFIER
+
+    END             reduce using rule 1 (empty -> .)
+    IDENTIFIER      shift and go to state 54
+
+    EventIdentifierInSynchronization shift and go to state 49
+    Synchronization                shift and go to state 50
+    SynchronizationStar            shift and go to state 64
+    MacroEventDefinition           shift and go to state 52
+    empty                          shift and go to state 53
+
+state 51
+
+    (13) SynchronizationClause -> SYNCHRONIZATION SynchronizationStar .
+
+    END             reduce using rule 13 (SynchronizationClause -> SYNCHRONIZATION SynchronizationStar .)
+
+
+state 52
+
+    (10) Synchronization -> MacroEventDefinition .
+
+    IDENTIFIER      reduce using rule 10 (Synchronization -> MacroEventDefinition .)
+    END             reduce using rule 10 (Synchronization -> MacroEventDefinition .)
+
+
+state 53
+
+    (11) SynchronizationStar -> empty .
+
+    END             reduce using rule 11 (SynchronizationStar -> empty .)
+
+
+state 54
+
+    (9) EventIdentifierInSynchronization -> IDENTIFIER .
+
+    DEUXPOINTS      reduce using rule 9 (EventIdentifierInSynchronization -> IDENTIFIER .)
+
+
+state 55
+
+    (28) EventIdentifierInTransition -> IDENTIFIER .
+
+    DEUXPOINTS      reduce using rule 28 (EventIdentifierInTransition -> IDENTIFIER .)
+
+
+state 56
+
+    (30) TransitionStar -> Transition . TransitionStar
+    (29) TransitionStar -> . empty
+    (30) TransitionStar -> . Transition TransitionStar
+    (1) empty -> .
+    (25) Transition -> . EventIdentifierInTransition DEUXPOINTS OriginalStateIdentifierInTransition FLECHE DestStateIdentifierInTransition
+    (28) EventIdentifierInTransition -> . IDENTIFIER
+
+    END             reduce using rule 1 (empty -> .)
+    IDENTIFIER      shift and go to state 55
+
+    Transition                     shift and go to state 56
+    EventIdentifierInTransition    shift and go to state 57
+    empty                          shift and go to state 58
+    TransitionStar                 shift and go to state 65
+
+state 57
+
+    (25) Transition -> EventIdentifierInTransition . DEUXPOINTS OriginalStateIdentifierInTransition FLECHE DestStateIdentifierInTransition
+
+    DEUXPOINTS      shift and go to state 66
+
+
+state 58
+
+    (29) TransitionStar -> empty .
+
+    END             reduce using rule 29 (TransitionStar -> empty .)
+
+
+state 59
+
+    (31) TransitionClause -> TRANSITION TransitionStar .
+
+    END             reduce using rule 31 (TransitionClause -> TRANSITION TransitionStar .)
+
+
+state 60
+
+    (37) StateVirguleIdentifierStar -> VIRGULE StateIdentifier . StateVirguleIdentifierStar
+    (36) StateVirguleIdentifierStar -> . empty
+    (37) StateVirguleIdentifierStar -> . VIRGULE StateIdentifier StateVirguleIdentifierStar
+    (1) empty -> .
+
+    VIRGULE         shift and go to state 42
+    EVENT           reduce using rule 1 (empty -> .)
+
+    StateVirguleIdentifierStar     shift and go to state 67
+    empty                          shift and go to state 44
+
+state 61
+
+    (17) ClassInstanceVirguleIdentifierStar -> VIRGULE ClassInstanceIdentifier ClassInstanceVirguleIdentifierStar .
+
+    BLOCK           reduce using rule 17 (ClassInstanceVirguleIdentifierStar -> VIRGULE ClassInstanceIdentifier ClassInstanceVirguleIdentifierStar .)
+    IDENTIFIER      reduce using rule 17 (ClassInstanceVirguleIdentifierStar -> VIRGULE ClassInstanceIdentifier ClassInstanceVirguleIdentifierStar .)
+    EVENT           reduce using rule 17 (ClassInstanceVirguleIdentifierStar -> VIRGULE ClassInstanceIdentifier ClassInstanceVirguleIdentifierStar .)
+
+
+state 62
+
+    (35) EventVirguleIdentifierStar -> VIRGULE EventIdentifier . EventVirguleIdentifierStar
+    (34) EventVirguleIdentifierStar -> . empty
+    (35) EventVirguleIdentifierStar -> . VIRGULE EventIdentifier EventVirguleIdentifierStar
+    (1) empty -> .
+
+    VIRGULE         shift and go to state 48
+    SYNCHRONIZATION reduce using rule 1 (empty -> .)
+    TRANSITION      reduce using rule 1 (empty -> .)
+
+    EventVirguleIdentifierStar     shift and go to state 68
+    empty                          shift and go to state 46
+
+state 63
+
+    (8) MacroEventDefinition -> EventIdentifierInSynchronization DEUXPOINTS . EventPath AndCommercialEvenPathStar
+    (5) EventPath -> . IDENTIFIER POINT IDENTIFIER
+
+    IDENTIFIER      shift and go to state 70
+
+    EventPath                      shift and go to state 69
+
+state 64
+
+    (12) SynchronizationStar -> Synchronization SynchronizationStar .
+
+    END             reduce using rule 12 (SynchronizationStar -> Synchronization SynchronizationStar .)
+
+
+state 65
+
+    (30) TransitionStar -> Transition TransitionStar .
+
+    END             reduce using rule 30 (TransitionStar -> Transition TransitionStar .)
+
+
+state 66
+
+    (25) Transition -> EventIdentifierInTransition DEUXPOINTS . OriginalStateIdentifierInTransition FLECHE DestStateIdentifierInTransition
+    (26) OriginalStateIdentifierInTransition -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 71
+
+    OriginalStateIdentifierInTransition shift and go to state 72
+
+state 67
+
+    (37) StateVirguleIdentifierStar -> VIRGULE StateIdentifier StateVirguleIdentifierStar .
+
+    EVENT           reduce using rule 37 (StateVirguleIdentifierStar -> VIRGULE StateIdentifier StateVirguleIdentifierStar .)
+
+
+state 68
+
+    (35) EventVirguleIdentifierStar -> VIRGULE EventIdentifier EventVirguleIdentifierStar .
+
+    SYNCHRONIZATION reduce using rule 35 (EventVirguleIdentifierStar -> VIRGULE EventIdentifier EventVirguleIdentifierStar .)
+    TRANSITION      reduce using rule 35 (EventVirguleIdentifierStar -> VIRGULE EventIdentifier EventVirguleIdentifierStar .)
+
+
+state 69
+
+    (8) MacroEventDefinition -> EventIdentifierInSynchronization DEUXPOINTS EventPath . AndCommercialEvenPathStar
+    (6) AndCommercialEvenPathStar -> . empty
+    (7) AndCommercialEvenPathStar -> . ANDCOMMERCIAL EventPath AndCommercialEvenPathStar
+    (1) empty -> .
+
+    ANDCOMMERCIAL   shift and go to state 74
+    IDENTIFIER      reduce using rule 1 (empty -> .)
+    END             reduce using rule 1 (empty -> .)
+
+    empty                          shift and go to state 73
+    AndCommercialEvenPathStar      shift and go to state 75
+
+state 70
+
+    (5) EventPath -> IDENTIFIER . POINT IDENTIFIER
+
+    POINT           shift and go to state 76
+
+
+state 71
+
+    (26) OriginalStateIdentifierInTransition -> IDENTIFIER .
+
+    FLECHE          reduce using rule 26 (OriginalStateIdentifierInTransition -> IDENTIFIER .)
+
+
+state 72
+
+    (25) Transition -> EventIdentifierInTransition DEUXPOINTS OriginalStateIdentifierInTransition . FLECHE DestStateIdentifierInTransition
+
+    FLECHE          shift and go to state 77
+
+
+state 73
+
+    (6) AndCommercialEvenPathStar -> empty .
+
+    IDENTIFIER      reduce using rule 6 (AndCommercialEvenPathStar -> empty .)
+    END             reduce using rule 6 (AndCommercialEvenPathStar -> empty .)
+
+
+state 74
+
+    (7) AndCommercialEvenPathStar -> ANDCOMMERCIAL . EventPath AndCommercialEvenPathStar
+    (5) EventPath -> . IDENTIFIER POINT IDENTIFIER
+
+    IDENTIFIER      shift and go to state 70
+
+    EventPath                      shift and go to state 78
+
+state 75
+
+    (8) MacroEventDefinition -> EventIdentifierInSynchronization DEUXPOINTS EventPath AndCommercialEvenPathStar .
+
+    IDENTIFIER      reduce using rule 8 (MacroEventDefinition -> EventIdentifierInSynchronization DEUXPOINTS EventPath AndCommercialEvenPathStar .)
+    END             reduce using rule 8 (MacroEventDefinition -> EventIdentifierInSynchronization DEUXPOINTS EventPath AndCommercialEvenPathStar .)
+
+
+state 76
+
+    (5) EventPath -> IDENTIFIER POINT . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 79
+
+
+state 77
+
+    (25) Transition -> EventIdentifierInTransition DEUXPOINTS OriginalStateIdentifierInTransition FLECHE . DestStateIdentifierInTransition
+    (27) DestStateIdentifierInTransition -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 80
+
+    DestStateIdentifierInTransition shift and go to state 81
+
+state 78
+
+    (7) AndCommercialEvenPathStar -> ANDCOMMERCIAL EventPath . AndCommercialEvenPathStar
+    (6) AndCommercialEvenPathStar -> . empty
+    (7) AndCommercialEvenPathStar -> . ANDCOMMERCIAL EventPath AndCommercialEvenPathStar
+    (1) empty -> .
+
+    ANDCOMMERCIAL   shift and go to state 74
+    IDENTIFIER      reduce using rule 1 (empty -> .)
+    END             reduce using rule 1 (empty -> .)
+
+    empty                          shift and go to state 73
+    AndCommercialEvenPathStar      shift and go to state 82
+
+state 79
+
+    (5) EventPath -> IDENTIFIER POINT IDENTIFIER .
+
+    ANDCOMMERCIAL   reduce using rule 5 (EventPath -> IDENTIFIER POINT IDENTIFIER .)
+    IDENTIFIER      reduce using rule 5 (EventPath -> IDENTIFIER POINT IDENTIFIER .)
+    END             reduce using rule 5 (EventPath -> IDENTIFIER POINT IDENTIFIER .)
+
+
+state 80
+
+    (27) DestStateIdentifierInTransition -> IDENTIFIER .
+
+    IDENTIFIER      reduce using rule 27 (DestStateIdentifierInTransition -> IDENTIFIER .)
+    END             reduce using rule 27 (DestStateIdentifierInTransition -> IDENTIFIER .)
+
+
+state 81
+
+    (25) Transition -> EventIdentifierInTransition DEUXPOINTS OriginalStateIdentifierInTransition FLECHE DestStateIdentifierInTransition .
+
+    IDENTIFIER      reduce using rule 25 (Transition -> EventIdentifierInTransition DEUXPOINTS OriginalStateIdentifierInTransition FLECHE DestStateIdentifierInTransition .)
+    END             reduce using rule 25 (Transition -> EventIdentifierInTransition DEUXPOINTS OriginalStateIdentifierInTransition FLECHE DestStateIdentifierInTransition .)
+
+
+state 82
+
+    (7) AndCommercialEvenPathStar -> ANDCOMMERCIAL EventPath AndCommercialEvenPathStar .
+
+    IDENTIFIER      reduce using rule 7 (AndCommercialEvenPathStar -> ANDCOMMERCIAL EventPath AndCommercialEvenPathStar .)
+    END             reduce using rule 7 (AndCommercialEvenPathStar -> ANDCOMMERCIAL EventPath AndCommercialEvenPathStar .)
+
