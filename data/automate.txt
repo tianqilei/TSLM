@@ -1,15 +1,16 @@
-class Doorstate open, close
+class Door1state open, close
 event opening, closing 
 transitionopening: close -> openclosing: open -> close
 closing1 : open -> open end
 
-class Doorstate open, close
+class Door2state open, close
 event opening, closing 
 transitionopening: close -> openclosing: open -> close
 closing1 : open -> open end
 
 block C
-Door A, B
+Door3 A, B
+Door4 N, BB
 event closing, aopen, bopen
 synchronization
   aopen : A.opening

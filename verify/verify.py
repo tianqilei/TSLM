@@ -16,7 +16,7 @@ def isClassOfBlockExists(class_list, classNameInBlock_list):
 # si toutes les states sont util (déclaré, mais pas apparaitre dans transition)
 def verifyStateOfClass():
     print()
-    
+
 def verifyClass():
     verifyStateOfClass()
 
@@ -39,3 +39,17 @@ for value in blockTreeList:
 print("Class : ")
 for value in classTreeList:
     print(value)
+
+allClass=[]
+for value in classTreeList:
+    allClass.append(value[0])
+
+allClassInBlock=[]
+for value in blockTreeList:
+    allClassInBlock.append(value[1][0][0])
+
+print(allClass)
+print(allClassInBlock)
+
+if minus(allClassInBlock,allClass):
+    print("ok")

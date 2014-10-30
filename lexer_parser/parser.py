@@ -26,6 +26,7 @@ classTree_list=[]
 classInstanceTuple_list=[]
 eventInSynchronizationTuple_list=[]
 transitionTuple_list=[]
+classNameInstanceTuple=[]
 def p_empty(p):
     'empty :'
     pass
@@ -116,18 +117,21 @@ def p_ClassInstanceVirguleIdentifierStar(p):
 #dans quel cas on est la?!
 def p_ClassInstance(p):
     '''ClassInstance : ClassNameIdentifier ClassInstanceIdentifier ClassInstanceVirguleIdentifierStar'''
+    classNameInstanceTuple.append(className_list.pop())
+    classNameInstanceTuple.append(classInstance_list.copy())
+    className_list.clear()
+    classInstance_list.clear()
 
 def p_ComposedBlockClause(p):
     '''ComposedBlockClause : Block
                            | ClassInstance
                            | Block ComposedBlockClause
                            | ClassInstance ComposedBlockClause'''
-    classInstanceTuple=[]
-    classInstanceTuple.append(className_list.copy()[0])
-    classInstanceTuple.append(classInstance_list.copy())
-    classInstanceTuple_list.append(classInstanceTuple)
+    classInstanceTuple_list.append(classNameInstanceTuple.copy())
+    classNameInstanceTuple.clear()
     className_list.clear()
     classInstance_list.clear()
+
 def p_StateIdentifier(p):
     '''StateIdentifier : IDENTIFIER'''
     state_list.append(p[1])
