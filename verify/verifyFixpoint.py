@@ -1,7 +1,6 @@
 __author__ = 'tianqilei'
 from lexer_parser import parser
 from tools import tools
-blockTreeList=parser.blockTree_list
 classTreeList=parser.classTree_list
 
 #print(classTreeList)
@@ -38,4 +37,6 @@ def checkFixpoint(classTree):
     else:
         print("Warning : check fix point result : false")
 
-checkFixpoint(classTreeList[1])
+for classTree in classTreeList:
+    print("Class : " + tools.getNameOfClass(classTree))
+    checkFixpoint(classTree)

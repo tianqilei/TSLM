@@ -1,7 +1,6 @@
 __author__ = 'tianqilei'
 from lexer_parser import parser
 from tools import tools
-blockTreeList=parser.blockTree_list
 classTreeList=parser.classTree_list
 
 def reachable(classTree):
@@ -21,5 +20,6 @@ def reachable(classTree):
     stateInreachable=tools.minus(allStateBesideInit, stateReachableTemp)
     print(stateInreachable)
 
-reachable(classTreeList[0])
-#reachable(classTreeList[1])
+for classTree in classTreeList:
+    print("State(s) unreachable of class : " + tools.getNameOfClass(classTree))
+    reachable(classTree)
