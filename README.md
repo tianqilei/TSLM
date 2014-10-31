@@ -27,7 +27,7 @@ synchronization
   -> eventPathInSynchronization_list : [(A.opening),(B.opening)]
 
 
-fais attention :
+fais attention : 
 class Door
 state open, close
 event opening, closing1
