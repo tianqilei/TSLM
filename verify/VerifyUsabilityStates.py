@@ -1,7 +1,6 @@
 __author__ = 'cyrine horchani'
 from lexer_parser import parser
 from tools import tools
-blockTreeList=parser.blockTree_list
 classTreeList=parser.classTree_list
 
 def usability(classTree):
@@ -24,5 +23,6 @@ def usability(classTree):
     print("Error: state used but not declared")
     print(NotDeclaredStates)
 
-
-usability(classTreeList[0])
+for classTree in classTreeList:
+    print("Usability of class : " + tools.getNameOfClass(classTree))
+    usability(classTree)
