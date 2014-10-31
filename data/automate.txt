@@ -1,7 +1,8 @@
-class Door1state open, close
+class Door1state open1,close2,open
 event opening, closing 
-transitionopening: close -> openclosing: open -> close
-closing1 : open -> open end
+transitionopening: close -> open1closing: open -> close
+test : open1 -> open 
+end
 
 class Door2state open, close
 event opening, closing 

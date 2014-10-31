@@ -1,12 +1,10 @@
 from lexer_parser import parser
+from tools import tools
 
 __author__ = 'tianqilei'
 #print(data)
 blockTreeList=parser.blockTree_list
 classTreeList=parser.classTree_list
-
-def minus(list1, list2):
-    return list (set(list1)-set(list2))
 
 def isClassOfBlockExists(class_list, classNameInBlock_list):
     print()
@@ -51,5 +49,5 @@ for value in blockTreeList:
 print(allClass)
 print(allClassInBlock)
 
-if minus(allClassInBlock,allClass):
+if tools.minus(allClassInBlock,allClass):
     print("ok")
