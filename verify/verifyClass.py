@@ -56,8 +56,6 @@ def verifyState(classTreeList):
     for classTree in classTreeList:
         verifyStateOfClass(classTree)
 
-if verifyEvent(classTreeList) :
-    print("class event is good")
-if verifyState(classTreeList):
-    print("class state is good")
+verifyEvent(classTreeList)
+verifyState(classTreeList)
 

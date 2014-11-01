@@ -28,7 +28,7 @@ def getAllDeclarationOfBlock(blockTree):
 def getAllEventOfBlock(blockTree):
     return blockTree[2]
 
-def getAllSynchronizationOfState(blockTree):
+def getAllSynchronizationOfBlock(blockTree):
     return blockTree[3]
 
 # a given state perform a given transition and return the destination state if the given state correspond the given transition
@@ -71,3 +71,11 @@ def insertState(list1, list2):
         if not list1.__contains__(value):
             list1.append(value)
     return list1
+
+# return the class name of the given instance
+def getClassNameOfInstanceOfBlock(instanceName, blockTree):
+    allDecl=getAllDeclarationOfBlock(blockTree)
+    for decl in allDecl:
+        if decl[1].__contains__(instanceName):
+            return decl[0]
+    return False

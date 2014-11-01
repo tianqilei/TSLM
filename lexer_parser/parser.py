@@ -121,16 +121,17 @@ def p_ClassInstance(p):
     classNameInstanceTuple.append(classInstance_list.copy())
     className_list.clear()
     classInstance_list.clear()
+    classInstanceTuple_list.append(classNameInstanceTuple.copy())
+    classNameInstanceTuple.clear()
+    className_list.clear()
+    classInstance_list.clear()
 
 def p_ComposedBlockClause(p):
     '''ComposedBlockClause : Block
                            | ClassInstance
                            | Block ComposedBlockClause
                            | ClassInstance ComposedBlockClause'''
-    classInstanceTuple_list.append(classNameInstanceTuple.copy())
-    classNameInstanceTuple.clear()
-    className_list.clear()
-    classInstance_list.clear()
+
 
 def p_StateIdentifier(p):
     '''StateIdentifier : IDENTIFIER'''

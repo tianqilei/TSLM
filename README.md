@@ -3,8 +3,9 @@ TSLM
 
 projet bizzar :
 
-travail à faire : ajouter OBSERVER
-
+travail à faire : 
+1. ajouter OBSERVER
+2. vérifier instance name non duplicate
 
 eventInBlock_list=[] => ([blockName, classInstanceTuple list, eventInBlock list, eventInSynchronizationTuple list], [], …)
 eventInClass_list=[(className, state list, event list, transitionTuple list), … ]
