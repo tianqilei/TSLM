@@ -1,21 +1,27 @@
-class Door1state open1,close2,open
+class Door1
+state open,close
 event opening, closing 
-transitionopening: close -> open1closing1: open -> close
-test : open1 -> open 
+transition
+opening: close -> open
+closing: open -> close
 end
 
-class Door2state open, close
-event opening, closing1 
-transitionopening: close -> openclosing: open -> close
-closing1 : open -> open end
+class Door2
+state open,close
+event opening, closing
+transition
+opening: close -> open
+closing: open -> close
+end
 
 block C
-Door1 A, B
-Door2 N, BB
+Door1 A, C
+Door2 B
 event closing, aopen, bopen
 synchronization
-  aopen : A.opening2
+  aopen : A.opening
   bopen : B.opening
-  closing : BB.closing & N.closing
+  copen : C.opening
+  closeAll : B.closing & A.closing
 end
 

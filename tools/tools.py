@@ -1,5 +1,7 @@
 __author__ = 'tianqilei'
 
+from lexer_parser import parser
+classTreeList=parser.classTree_list
 # list1 - list2 : list1 va supprimer tous les éléments qui se trouve dans list2
 def minus(list1, list2):
     return list (set(list1)-set(list2))
@@ -42,6 +44,15 @@ def transit(state, transition):
     else :
         print("log : error this state doesn't correspond the given transition")
 
+#use only for calc.py
+def transitOnlyForCalc(state, transition):
+    states = transition[1]
+    if state==states[0]:
+        return states[1]
+    else :
+        state
+
+
 # get all the possible transitions of a given state
 # for instance :
 # for state A, the possible transitions are : A->B, A->C, etc.
@@ -79,3 +90,17 @@ def getClassNameOfInstanceOfBlock(instanceName, blockTree):
         if decl[1].__contains__(instanceName):
             return decl[0]
     return False
+
+# identifier : opening, className : Door1
+def getTransitionWithIdentifier(identifier, className, classTreeList) :
+    for classTree in classTreeList:
+        if className == getNameOfClass(classTree):
+            allTransitions=getAllTransitionOfClass(classTree)
+            for transition in allTransitions:
+                if transition[0]==identifier:
+                    return transition
+                else :
+                    continue
+        else :
+            continue
+

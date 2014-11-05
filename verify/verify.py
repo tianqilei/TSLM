@@ -6,28 +6,6 @@ __author__ = 'tianqilei'
 blockTreeList=parser.blockTree_list
 classTreeList=parser.classTree_list
 
-def isClassOfBlockExists(class_list, classNameInBlock_list):
-    print()
-
-#vérifier
-# si toutes les states sont déclarée
-# si toutes les states sont util (déclaré, mais pas apparaitre dans transition)
-def verifyStateOfClass():
-    print()
-
-def verifyClass():
-    verifyStateOfClass()
-
-def verifyBlock():
-    print()
-
-def verify():
-    verifyClass()
-    verifyBlock()
-
-verify()
-
-
 
 #debug
 print("Block : ")
