@@ -6,6 +6,12 @@ classTreeList=parser.classTree_list
 def minus(list1, list2):
     return list (set(list1)-set(list2))
 
+# copy list2 to list1
+def copy(list1,list2):
+    for element in list2:
+        list1.append(element)
+    return list1
+
 def getInitStateOfClass(classTree):
     return classTree[1][0]
 
@@ -50,7 +56,7 @@ def transitOnlyForCalc(state, transition):
     if state==states[0]:
         return states[1]
     else :
-        state
+        return state
 
 
 # get all the possible transitions of a given state

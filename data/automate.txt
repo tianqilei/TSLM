@@ -1,5 +1,5 @@
 class Door1
-state open,close
+state close, open
 event opening, closing 
 transition
 opening: close -> open
@@ -7,7 +7,7 @@ closing: open -> close
 end
 
 class Door2
-state open,close
+state close, open
 event opening, closing
 transition
 opening: close -> open
@@ -22,6 +22,6 @@ synchronization
   aopen : A.opening
   bopen : B.opening
   copen : C.opening
-  closeAll : B.closing & A.closing
+  closeAll : B.closing & A.closing & C.closing
 end
 

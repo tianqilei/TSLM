@@ -5,15 +5,13 @@ from tools import tools
 
 blockTreeList=parser.blockTree_list
 classTreeList=parser.classTree_list
-
+productSynchronized=[]
+statesExistingOfPS=[]
 def clacProduitSyn():
     allSynchronizations=tools.getAllSynchronizationOfBlock(blockTreeList[0])
     initStates=[]
-    # non C !!!!!!!!!!!!!!!!!
     allDecls=tools.getAllDeclarationOfBlock(blockTreeList[0])
-    #print(allDecls)
     for decl in allDecls:
-        #print(decl)
         for classTree in classTreeList:
             if decl[0] == tools.getNameOfClass(classTree):
                 for instance in decl[1]:
@@ -27,27 +25,66 @@ def clacProduitSyn():
         for syn in synchronization[1]:
             temp=tools.getClassNameOfInstanceOfBlock(syn[0], blockTreeList[0])
             syn.insert(0,temp)
-#    print(allSynchronizations)
 
     # states which are already contained in product synchronized
-    statesExistingOfPS=[]
     statesExistingOfPS.append(initStates)
+
     #new states of product synchronized : a new state is also a list
     newStatesOfPS=[]
     newStatesOfPS.append(initStates)
-#    newStatesOfPS.append(1)
-    #print(newStatesOfPS)
     # a list of transition like [(A,B) -> (A',B'), (A,B) -> (A',B)]
-    produitSynchronized=[]
-    # it might exist more than one new state
-    for newState in newStatesOfPS:
-        for synchronization in allSynchronizations:
-            newStateTemp=[]
-            if check(newState,synchronization) :
-                print(newState)
-                print(synchronization)
-                print()
 
+    # it might exist more than one new state
+    c=0
+    while 1 :
+        oldStateExistingOfPS=[]
+        oldStateExistingOfPS=statesExistingOfPS.copy()
+        for newState in newStatesOfPS:
+            for synchronization in allSynchronizations:
+                newStateTemp=newState
+                if check(newStateTemp,synchronization) :
+                    res=[]
+                    res = getNewState(newStateTemp,synchronization)
+                    addToProductSyn(newStateTemp, synchronization, res, productSynchronized)
+                    if not statesExistingOfPS.__contains__(res) :
+                        statesExistingOfPS.append(res)
+        newStatesOfPSNextTime=[]
+        for stateExisting in statesExistingOfPS:
+            if not oldStateExistingOfPS.__contains__(stateExisting) :
+                newStatesOfPSNextTime.append(stateExisting)
+        newStatesOfPS = newStatesOfPSNextTime
+#        print(statesExistingOfPS)
+#        print()
+        if not newStatesOfPS :
+            break
+#    print(productSynchronized)
+
+def addToProductSyn(state1, syn, state2, productSyn) :
+    temp=[]
+    temp.append(state1)
+    temp.append(syn)
+    temp.append(state2)
+    productSyn.append(temp)
+
+def getNewState(newState, synchronizaion):
+    res=[]
+    for state in newState:
+        temp=state.copy()
+        for syn in synchronizaion[1]:
+            if temp[0]==syn[0] and temp[2]==syn[1] :
+                transition=tools.getTransitionWithIdentifier(syn[2],syn[0],classTreeList)
+                temp.insert(1,tools.transitOnlyForCalc(temp[1],transition))
+                temp.remove(temp[2])
+        res.append(temp)
+    return res
+
+'''def getNewState(newState, synchronizaion):
+    for state in newState:
+        for syn in synchronizaion[1]:
+            if state[0]==syn[0] and state[2]==syn[1] :
+                transition=tools.getTransitionWithIdentifier(syn[2],syn[0],classTreeList)
+                state.insert(1,tools.transit(state[1],transition))
+                state.remove(state[2])'''
 
 def check(newState, synchronization):
     for syn in synchronization[1] :
@@ -63,3 +100,6 @@ def check(newState, synchronization):
 
 
 clacProduitSyn()
+
+print(statesExistingOfPS)
+print(productSynchronized)
