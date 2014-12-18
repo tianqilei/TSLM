@@ -1,0 +1,76 @@
+class Cabin
+state stop, move
+event moving, stopping, moving1
+transition
+stopping: move -> stop
+moving: stop -> move
+moving1: move -> move
+end
+
+class Door
+state open, close
+event opening, closing
+transition
+opening: close -> open
+closing: open -> close
+end
+
+
+class Floor
+state f0, f1, f2
+event upto1, upto2, floor0, floor1, floor2, downto0, downto1
+transition
+upto1: f0 -> f1
+upto2: f1 -> f2
+downto1: f2 -> f1
+downto0: f1 -> f0
+floor0: f0 -> f0
+floor1: f1 -> f1
+floor2: f2 -> f2
+end
+
+class Choice
+state c0, c1, c2
+event down10, down21, down20, up01, up12, up02, rest0, rest1, rest2
+transition
+up01: c0 -> c1
+up12: c1 -> c2
+up02: c0 -> c2
+down21: c2 -> c1
+down10: c1 -> c0
+down20: c2 -> c0
+rest0: c0 -> c0
+rest1: c1 -> c1
+rest2: c2 -> c2
+end
+
+block Ascenseur
+Door D
+Cabin Ca
+Floor F
+Choice Ch
+event choice0_f1, choice1_f1, choice2_f1, choice0_f2, choice1_f2, choice2_f2, choice0_f0, choice1_f0, choice2_f0, arrival0, arrival1, arrival2, rise1, rise2, descent0, descent1
+synchronization
+choice0_f1: Ca.moving & D.closing & F.floor1 & Ch.down10
+choice1_f1: Ca.moving & D.closing & F.floor1 & Ch.rest1
+choice2_f1: Ca.moving & D.closing & F.floor1 & Ch.up12
+choice0_f2: Ca.moving & D.closing & F.floor2 & Ch.down20
+choice1_f2: Ca.moving & D.closing & F.floor2 & Ch.down21
+choice2_f2: Ca.moving & D.closing & F.floor2 & Ch.rest2
+choice0_f0: Ca.moving & D.closing & F.floor0 & Ch.rest0
+choice1_f0: Ca.moving & D.closing & F.floor0 & Ch.up01
+choice2_f0: Ca.moving & D.closing & F.floor0 & Ch.up02
+
+arrival0: Ca.stopping & D.opening & F.floor0 & Ch.rest0
+arrival1: Ca.stopping & D.opening & F.floor1 & Ch.rest1
+arrival2: Ca.stopping & D.opening & F.floor2 & Ch.rest2
+
+rise1: F.upto1 & Ca.moving1 & Ch.rest1
+rise2:  F.upto2 & Ca.moving1 & Ch.rest2
+
+descent0:  F.downto0 & Ca.moving1 & Ch.rest0
+descent1:  F.downto1 & Ca.moving1 & Ch.rest1
+observer
+open : A.opening or not B.A.C.closing and not D.opening
+close : B.C.opening and not A.closing
+end

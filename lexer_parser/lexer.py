@@ -12,14 +12,15 @@ reserved = {
     'state':'STATE',
     'end':'END',
     'synchronization':'SYNCHRONIZATION',
-    'observer':'OBSERVER'
-#    'and':'AND',
-#    'or':'OR'
+    'observer':'OBSERVER',
+    'and':'AND',
+    'or':'OR',
+    'not': 'NOT'
 }
 
 
 tokens = [ 'POINT', 'DEUXPOINTS', 'FLECHE', 'ANDCOMMERCIAL', 'VIRGULE',
-	 'IDENTIFIER' ] + list(reserved.values())
+	 'IDENTIFIER', 'LEFTBRACKET', 'RIGHTBRACKET' ] + list(reserved.values())
 
 # Tokens
 
@@ -27,8 +28,9 @@ t_VIRGULE = r'\,'
 t_DEUXPOINTS  = r'\:'
 t_ANDCOMMERCIAL = r'\&'
 t_POINT = r'\.'
-#t_IDENTIFIER  = r'[A-Z][a-zA-Z0-9_]*'
 t_FLECHE = r'\->'
+t_LEFTBRACKET = r'\('
+t_RIGHTBRACKET = r'\)'
 
 
 
@@ -48,15 +50,18 @@ def t_IDENTIFIER(t):
 
 
 def t_error(t):
-    print("lexer : Illegal character '%s'" % t.value[0])
+    print("lexer : Illegal character '%s'" % t.value[0] + "at the line : " + str(t.lexer.lineno))
+    print("Syntax error! Exit the program!")
     t.lexer.skip(1)
+    exit(1)
 
 
 # Build the lexer
 import ply.lex as lex
 lex.lex()
 
-file = open("../data/automate.txt")
+from data import getFilePath
+file = open(getFilePath.getFilePath())
 data=''
 while 1:
     line = file.readline()
@@ -66,8 +71,3 @@ while 1:
 
 #print(data)
 lex.input(data)
-
-#while True:
-#    tok = lex.token()
-#    print(tok)
-#    if not tok: break

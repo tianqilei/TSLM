@@ -6,27 +6,6 @@ from tools import tools
 blockTreeList=parser.blockTree_list
 classTreeList=parser.classTree_list
 
-def usability(classTree):
-    Allstates=tools.getAllStateOfClass(classTree)
-    AllTransition=tools.getAllTransitionOfClass(classTree)
-    UsedStates=[]
-    for value in AllTransition:
-        UsedStates.extend(value[1])
-    UsedStates = list(set(UsedStates))
-    UnUsedStates=[]
-    UnUsedStates=tools.minus(Allstates, UsedStates)
-    print("Warning: states declared but not used")
-    print(UnUsedStates)
-    NotDeclaredStates=[]
-    NotDeclaredStates=tools.minus(UsedStates,Allstates)
-    print("Error: states used but not declared")
-    print(NotDeclaredStates)
-
-def verifyUsability(classTree):
-    for classTree in classTreeList:
-        print("Usability of class : " + tools.getNameOfClass(classTree))
-        usability(classTree)
-
 def verifyEventOfBlock(blockTree):
     b=False
     c=False
@@ -56,6 +35,7 @@ def verifyEvent(blockTreeList):
 #verifyEvent(blockTreeList)
 
 def verifySynchronizationOfBlock(blockTree, classTreeList):
+    blockName = tools.getNameOfBlock(blockTree)
     allSynchronization=tools.getAllSynchronizationOfBlock(blockTree)
     for synchronization in allSynchronization:
         for value in synchronization[1]:
@@ -68,10 +48,37 @@ def verifySynchronizationOfBlock(blockTree, classTreeList):
                         if not allEvent.__contains__(value[1]) :
                             print("Error : Event : "+value[1]+" in class : "+className+" doesn't exist")
             else :
-                print("Error : class not declared")
+                print("Error : class " + value[0] +" in the synchronisation : "+ value[1] +" is not declared in block : " + blockName)
+
 
 def verifySynchronization(blockTreeList, classTreeList):
     for blockTree in blockTreeList:
         verifySynchronizationOfBlock(blockTree, classTreeList)
 
-verifySynchronization(blockTreeList,classTreeList)
+#verifySynchronization(blockTreeList,classTreeList)
+
+def verifyBlockNb(blockTreeList) :
+    if(blockTreeList.__len__() != 1) :
+        print("Error : you have more than one block !")
+
+#verifyBlockNb(blockTreeList)
+
+def verifyNomAmbigue():
+    nameList = []
+    for blockTree in blockTreeList :
+        blockName = tools.getNameOfBlock(blockTree)
+        declarations = tools.getAllDeclarationOfBlock(blockTree)
+        for declaration in declarations :
+            if(nameList.__contains__(declaration[1])) :
+                #print("Error : The instance name : " + declaration[1] + " exist already in block " + blockName)
+                print("No")
+            else :
+                nameList.append(declaration[1])
+
+def verifyBlock():
+    verifyBlockNb(blockTreeList)
+    verifyEvent(blockTreeList)
+    verifySynchronization(blockTreeList,classTreeList)
+    verifyNomAmbigue()
+
+verifyBlock()

@@ -46,7 +46,44 @@ def verifyStateOfClass(classTree):
         print("Error : state not declared in the class : " + tools.getNameOfClass(classTree))
         print(stateNotDecl)
         c=True
-    return  b and c
+    return b and c
+
+def verifyTransitionOfClass(classTree):
+    className = tools.getNameOfClass(classTree)
+    allTransitions = tools.getAllTransitionOfClass(classTree)
+    allStates = tools.getAllStateOfClass(classTree)
+    allEvents = tools.getAllEventOfClass(classTree)
+    for transition in allTransitions:
+        transitionName = transition[0]
+        transitionContent = transition[1]
+        if(not allEvents.__contains__(transitionName)):
+            print("Error : transition identifier : " + transitionName + " used, but not declared in class : " + className)
+        for content in transitionContent:
+            if (not allStates.__contains__(content)) :
+                print("Error : state : " + content +" used, but not declared in class : " + className)
+
+
+def usability(classTree):
+    Allstates=tools.getAllStateOfClass(classTree)
+    AllTransition=tools.getAllTransitionOfClass(classTree)
+    UsedStates=[]
+    for value in AllTransition:
+        UsedStates.extend(value[1])
+    UsedStates = list(set(UsedStates))
+    UnUsedStates=[]
+    UnUsedStates=tools.minus(Allstates, UsedStates)
+    if (UnUsedStates) :
+        print("Warning: states declared but not used")
+        print(UnUsedStates)
+    NotDeclaredStates=[]
+    NotDeclaredStates=tools.minus(UsedStates,Allstates)
+    if (NotDeclaredStates):
+        print("Error: states used but not declared")
+        print(NotDeclaredStates)
+
+def verifyUsability():
+    for classTree in classTreeList:
+        usability(classTree)
 
 def verifyEvent(classTreeList):
     for classTree in classTreeList:
@@ -56,6 +93,14 @@ def verifyState(classTreeList):
     for classTree in classTreeList:
         verifyStateOfClass(classTree)
 
-verifyEvent(classTreeList)
-verifyState(classTreeList)
+def verifyTransition(classTreeList):
+    for classTree in classTreeList:
+        verifyTransitionOfClass(classTree)
 
+def verifyClass() :
+    verifyEvent(classTreeList)
+    verifyState(classTreeList)
+    verifyTransition(classTreeList)
+    verifyUsability()
+
+verifyClass()

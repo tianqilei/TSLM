@@ -39,6 +39,15 @@ def getAllEventOfBlock(blockTree):
 def getAllSynchronizationOfBlock(blockTree):
     return blockTree[3]
 
+def getObserversOfBlock(blockTree) :
+    return blockTree[4]
+
+def getObserversOfBlock(blockTree):
+    if (blockTree.__len__() < 4) :
+        return ""
+    else:
+        return blockTree[4]
+
 # a given state perform a given transition and return the destination state if the given state correspond the given transition
 # for instance :
 # transit(A, A->B) -> B
@@ -57,7 +66,6 @@ def transitOnlyForCalc(state, transition):
         return states[1]
     else :
         return state
-
 
 # get all the possible transitions of a given state
 # for instance :
@@ -110,3 +118,21 @@ def getTransitionWithIdentifier(identifier, className, classTreeList) :
         else :
             continue
 
+#return the initial states of product synchronized
+def getInitStateOfProductSynchronized(productSynchroniezd) :
+    if(productSynchroniezd == []) :
+        return []
+    else :
+        return productSynchroniezd[0][0]
+
+def getAllReachableStateWithOnlyOneTransition(state, productSynchronized) :
+    temp=[]
+    for element in productSynchronized :
+        if element[0] == state :
+            temp.append(element[2])
+            '''path = []
+            path.append(element[0])
+            path.append(element[1])
+            path.append(element[2])
+            temp.append(path)'''
+    return temp

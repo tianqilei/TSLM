@@ -27,13 +27,16 @@ classInstanceTuple_list=[]
 eventInSynchronizationTuple_list=[]
 transitionTuple_list=[]
 classNameInstanceTuple=[]
+
+precedence = (
+    ('left','AND','OR'),
+    ('right','NOT'),
+    )
+
 def p_empty(p):
     'empty :'
     pass
 
-def p_Identifier(p):
-    '''Identifier : IDENTIFIER'''
-    print("if this string printed, it means there is sth wrong with Identifier : ", p[1])
 def p_ClassIdentifier(p):
     '''ClassIdentifier : IDENTIFIER'''
     class_list.append(p[1])
@@ -114,7 +117,6 @@ def p_ClassInstanceVirguleIdentifierStar(p):
     '''ClassInstanceVirguleIdentifierStar : empty
                              | VIRGULE ClassInstanceIdentifier ClassInstanceVirguleIdentifierStar'''
 
-#dans quel cas on est la?!
 def p_ClassInstance(p):
     '''ClassInstance : ClassNameIdentifier ClassInstanceIdentifier ClassInstanceVirguleIdentifierStar'''
     classNameInstanceTuple.append(className_list.pop())
@@ -137,9 +139,6 @@ def p_StateIdentifier(p):
     '''StateIdentifier : IDENTIFIER'''
     state_list.append(p[1])
 
-#def p_EventIdentifier(p):
-#    '''EventIdentifier : IDENTIFIER'''
-#    event_list.append(p[1])
 
 def p_Transition(p):
     '''Transition : EventIdentifierInTransition DEUXPOINTS OriginalStateIdentifierInTransition FLECHE DestStateIdentifierInTransition'''
@@ -192,8 +191,152 @@ def p_StateVirguleIdentifierStar(p):
     '''StateVirguleIdentifierStar : empty
                                     | VIRGULE StateIdentifier StateVirguleIdentifierStar'''
 
+statePath = []
+def p_StatePathIdentifier(p):
+    '''StatePathIdentifier : IDENTIFIER
+    '''
+    statePath.append(p[1])
+
+def p_PointStatePathIdentifierStar(p):
+    '''PointStatePathIdentifierStar : empty
+                                    | POINT StatePathIdentifier PointStatePathIdentifierStar
+    '''
+
+content = []
+def p_StatePath(p):
+    '''StatePath : StatePathIdentifier PointStatePathIdentifierStar
+    '''
+ #   print(statePath)
+    content.append(statePath.copy())
+    statePath.clear()
+
+def p_StatePathNot(p):
+    '''StatePathNot : StatePathIdentifier PointStatePathIdentifierStar
+    '''
+    statePath.insert(0,"not")
+    content.append(statePath.copy())
+    statePath.clear()
+
+def p_AndStatePath(p) :
+    '''AndStatePath : StatePathIdentifier PointStatePathIdentifierStar
+    '''
+    statePath.append("and")
+    content.append(statePath.copy())
+    statePath.clear()
+
+def p_AndStatePathNot(p):
+    '''AndStatePathNot : StatePathIdentifier PointStatePathIdentifierStar
+    '''
+    statePath.insert(0,"not")
+    statePath.append("and")
+    content.append(statePath.copy())
+    statePath.clear()
+
+def p_OrStatePathNot(p) :
+    '''OrStatePathNot : StatePathIdentifier PointStatePathIdentifierStar
+    '''
+    statePath.insert(0,"not")
+    statePath.append("or")
+    content.append(statePath.copy())
+    statePath.clear()
+
+def p_OrStatePath(p) :
+    '''OrStatePath : StatePathIdentifier PointStatePathIdentifierStar
+    '''
+    statePath.append("or")
+    content.append(statePath.copy())
+    statePath.clear()
+
+def p_AtomicObserver(p):
+    '''AtomicObserver : StatePath
+                        | LEFTBRACKET Observer RIGHTBRACKET
+    '''
+
+def p_AtomicObserverNot(p):
+    '''AtomicObserverNot : StatePathNot
+                        | LEFTBRACKET Observer RIGHTBRACKET
+    '''
+
+def p_ObserverNot(p) :
+    '''ObserverNot : NOT AtomicObserverNot
+                    | AtomicObserver
+    '''
+
+def p_OrAtomicObserver(p) :
+    '''OrAtomicObserver : OrStatePath
+                            | LEFTBRACKET Observer RIGHTBRACKET
+    '''
+
+def p_OrAtomicObserverNot(p) :
+    '''OrAtomicObserverNot : OrStatePathNot
+                            | LEFTBRACKET Observer RIGHTBRACKET
+    '''
+
+def p_AndAtomicObserverNot(p) :
+    '''AndAtomicObserverNot : AndStatePathNot
+                            | LEFTBRACKET Observer RIGHTBRACKET
+    '''
+
+def p_AndAtomicObserver(p):
+    '''AndAtomicObserver : AndStatePath
+                            | LEFTBRACKET Observer RIGHTBRACKET
+    '''
+
+def p_AndObserverNot(p) :
+    '''AndObserverNot : NOT AndAtomicObserverNot
+                        | AndAtomicObserver
+    '''
+    #statePath.append("and")
+
+def p_AndObserverNotStar(p):
+    '''AndObserverNotStar : empty
+                            | AND AndObserverNot AndObserverNotStar
+    '''
+
+def p_ObserverAnd(p):
+    '''ObserverAnd : ObserverNot AndObserverNotStar
+    '''
+
+def p_OrObserverNot(p) :
+    '''OrObserverNot : NOT OrAtomicObserverNot
+                        | OrAtomicObserver
+    '''
+
+def p_OrObserverAnd(p) :
+    '''OrObserverAnd : OrObserverNot AndObserverNotStar
+    '''
+
+def p_OrObserverAndStar(p):
+    '''OrObserverAndStar : empty
+                        | OR OrObserverAnd OrObserverAndStar
+    '''
+
+def p_ObserverOr(p):
+    '''ObserverOr : ObserverAnd OrObserverAndStar
+    '''
+
+observerName = []
+def p_ObserverIdentifier(p) :
+    '''ObserverIdentifier : IDENTIFIER
+    '''
+    observerName.append(p[1])
+
+contentList = []
+observers = []
+def p_Observer(p):
+    '''Observer : ObserverIdentifier DEUXPOINTS ObserverOr
+    '''
+    contentList.append(content.copy())
+    content.clear()
+    temp=[]
+    temp.append(observerName.pop())
+    temp.append(contentList.copy())
+    contentList.clear()
+    observers.append(temp)
+
 def p_ObserverStar(p):
     '''ObserverStar : empty
+                    | Observer ObserverStar
     '''
 
 def p_ObserverClauseQuestionMark(p) :
@@ -221,11 +364,13 @@ def p_EndBlock(p):
     blockTreeTuple.append(classInstanceTuple_list.copy())
     blockTreeTuple.append(eventInBlock_list.copy())
     blockTreeTuple.append(eventInSynchronizationTuple_list.copy())
+    blockTreeTuple.append(observers.copy())
     blockTree_list.append(blockTreeTuple)
     block_list.clear()
     classInstanceTuple_list.clear()
     eventInBlock_list.clear()
     eventInSynchronizationTuple_list.clear()
+    observers.clear()
 
 def p_EndClass(p):
     '''EndClass : END'''
@@ -260,7 +405,7 @@ def p_Class(p):
 
 #If ne faut pas ajouter BlockIdentifier dans une liste, pg il est just un symbole qui n'est pas encore reduce
 def p_Block(p):
-    '''Block : BLOCK BlockIdentifier BlockBody EndBlock'''
+            '''Block : BLOCK BlockIdentifier BlockBody EndBlock'''
 
 def p_Model(p):
     '''Model : Block Model
@@ -268,11 +413,13 @@ def p_Model(p):
              | empty'''
 
 def p_error(t):
-    print("parse : Illegal character '%s'" % t.value[0])
+    print("parse : Illegal character '%s'" % t.value[0] + " at the line : " + str(t.lexer.lineno))
+    print("Syntax error! Exit the program!")
     t.lexer.skip(1)
+    exit(1)
 
-
-file = open("../data/automate.txt")
+from data import getFilePath
+file = open(getFilePath.getFilePath())
 data=''
 while 1:
     line = file.readline()
@@ -280,55 +427,16 @@ while 1:
         break
     data += line
 
-#print(data)
-
 yacc.yacc(start = 'Model')
 yacc.parse(data)
-
-
-#debug
-
-'''print("When there is WARNING about 'Identifier' not used, it means this program is OK, if no WARNING, it means we left somewhere 'Identifier'")
-for value in block_list:
-    print ("block identifier: " + value)
-
-for value in class_list:
-    print ("class identifier : " + value)
-
-for value in eventInBlock_list :
-    print("event identifier in block : " + value)
-
-for value in eventInClass_list :
-    print("event identifier in class : " + value)
-
-for value in state_list:
-    print ("state identifier : " + value)
-
-for value in eventInTransition_list:
-    print("event identifier in transition : " + value)
-
-for value in className_list:
-    print("class name identifier : " + value)
-
-for value in classInstance_list:
-    print("class instance identifier : " + value)
-
-for value in eventInEventPath_list:
-    print("event identifier in EventPath : " + value)
-
-for value in classInEventPath_list:
-    print("class instance identifier in EventPath : " + value)
-
-for value in originalStateInTransition_list:
-    print("original state in transition : " + value)
-
-for value in destStateInTransition_list:
-    print("dest state in transition : " + value)
-
-for value in eventInSynchronisation_list :
-    print("event identifier in synchronization : " + value)
-
-for value in eventPathInSynchronization_list:
-    print("EventPath identifier in synchronization : " + value[0],value[1])'''
-
+'''
+print("Block : ")
+for block in blockTree_list:
+    print(block)
+    print()
+print("Class : ")
+for classT in classTree_list:
+    print(classT)
+    print()'''
+#print(observers)
 #fais attention au Identifier !!!
